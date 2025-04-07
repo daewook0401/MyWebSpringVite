@@ -1,8 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
-const home = "192.168.219.105"
-const out = "biglight.rlaeodnr.kro.kr"
 const local = "localhost"
 const url  = `http://${local}:80`
 
