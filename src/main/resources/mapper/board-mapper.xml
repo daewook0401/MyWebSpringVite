@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myspring.myproject.board.model.dao.BoardMapper">
+
+  <insert id="save"
+          parameterType="Board">
+    INSERT INTO PRIVATE_BOARDS(
+      BOARD_WRITER,
+      BOARD_TITLE,
+      BOARD_CONTENT,
+      BOARD_CATEGORY,
+      BOARD_FILE_URL
+    ) VALUES (
+      #{boardWriter},
+      #{boardTitle},
+      #{boardContent},
+      #{boardCategory},
+      #{boardFileUrl}
+    )
+  </insert>
+
+  <select id="findById"
+          parameterType="long"
+          resultType="BoardDTO">
+SELECT
+    b.BOARD_ID        AS boardId,
+    b.BOARD_WRITER    AS boardWriter,
+    b.BOARD_TITLE     AS boardTitle,
+    b.BOARD_CONTENT   AS boardContent,
+    b.BOARD_CATEGORY  AS boardCategory,
+    b.BOARD_FILE_URL  AS boardFileUrl,  
+    b.CREATED_AT      AS createdAt,
+    u.USER_NAME       AS userName  
+  FROM PRIVATE_BOARDS b
+  LEFT JOIN PRIVATE_USER u
+    ON b.BOARD_WRITER = u.USER_ID
+  WHERE b.BOARD_ID = #{boardId}
+  ORDER BY b.BOARD_ID DESC
+  </select>
+
+  <select id="findByCategory">
+    SELECT
+      b.BOARD_ID       AS id,
+      b.BOARD_TITLE    AS title,
+      u.USER_NAME        AS userName
+    FROM PRIVATE_BOARDS b
+    JOIN PRIVATE_USER u ON (b.BOARD_WRITER = u.USER_ID)
+    WHERE b.BOARD_CATEGORY = #{categoryId}
+    ORDER BY b.CREATED_AT DESC
+  </select>
+
+  <select id="findByCategoryAll">
+      SELECT
+      b.BOARD_ID       AS boardId,
+      b.BOARD_WRITER   AS boardWriter,
+      b.BOARD_TITLE    AS boardTitle,
+      b.BOARD_CONTENT  AS boardContent,
+      b.BOARD_CATEGORY AS boardCategory,
+      b.CREATED_AT     AS createdAt,
+      b.UPDATED_AT     AS updatedAt,
+      u.USER_NAME      AS userName
+    FROM PRIVATE_BOARDS b
+    JOIN PRIVATE_USER u ON (b.BOARD_WRITER = u.USER_ID)
+    WHERE b.BOARD_CATEGORY = #{categoryId}
+    ORDER BY b.CREATED_AT DESC
+  </select>
+
+  <delete id="deleteById">
+    DELETE FROM PRIVATE_BOARDS WHERE BOARD_ID = #{boardId}
+  </delete>
+</mapper>
+

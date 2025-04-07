@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myspring.myproject.category.model.dao.CategoryMapper">
+  <select id="findAll">
+    SELECT CATEGORY_ID   AS categoryId,
+           CATEGORY_NAME AS categoryName,
+           CREATOR_ID AS createId
+    FROM   PRIVATE_BOARD_CATEGORY
+    ORDER  BY CREATED_AT DESC
+  </select>
+  <insert id="insertCategory">
+    INSERT INTO PRIVATE_BOARD_CATEGORY (
+      CATEGORY_NAME,
+      CREATOR_ID
+    ) VALUES (
+      #{categoryName},
+      #{creatorId}
+    )
+  </insert>
+
+  <delete id="deleteById">
+    DELETE FROM PRIVATE_BOARD_CATEGORY
+    WHERE CATEGORY_ID = #{categoryId}
+  </delete>
+  <select id="selectFavoritesByUserId" parameterType="long" resultType="com.myspring.myproject.category.model.dto.FavoriteCategoryDTO">
+    SELECT 
+      FAVORITE_ID AS favoriteId,
+      USER_ID AS userId,
+      CATEGORY_ID AS categoryId,
+      CREATED_AT AS createdAt
+    FROM PRIVATE_CATEGORY_FAVORITES
+    WHERE USER_ID = #{userId}
+  </select>
+  <insert id="setFavoriteCategories">
+    INSERT INTO PRIVATE_CATEGORY_FAVORITES (
+      USER_ID,
+      CATEGORY_ID
+    ) VALUES (
+      #{userId},
+      #{categoryId}
+    )
+  </insert>
+  <delete id="deleteFavoriteByUserAndCategory" parameterType="map">
+    DELETE FROM PRIVATE_CATEGORY_FAVORITES
+    WHERE USER_ID = #{userId} AND CATEGORY_ID = #{categoryId}
+  </delete>
+</mapper>
+

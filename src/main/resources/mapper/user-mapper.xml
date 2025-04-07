@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myspring.myproject.user.model.dao.UserMapper">
+    <select id="getUserByUserEmail">
+    SELECT 
+           USER_ID userId
+         , USER_NAME userName
+         , USER_PW userPw
+         , USER_EMAIL userEmail
+         , ROLE role
+         , ADMIN_ACC adminAcc
+         , CREATED_AT createAt
+         , UPDATED_AT updateAt
+      FROM
+           PRIVATE_USER
+     WHERE
+           USER_EMAIL = #{userEmail}
+
+    </select>
+    <insert id="signUp">
+    INSERT INTO PRIVATE_USER(
+      USER_NAME,
+      USER_PW,
+      USER_EMAIL,
+      ROLE
+    ) 
+    VALUES(#{userName},#{userPw},#{userEmail},#{role})
+    
+    </insert>
+</mapper>
